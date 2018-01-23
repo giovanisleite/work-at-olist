@@ -23,3 +23,10 @@ class CallModelTest(TestCase):
     def test_duration(self):
         call = Call.objects.filter(started_at__isnull=False, finished_at__isnull=False).first()
         self.assertEqual(call.duration, '1h2m3s')
+
+    def test_calculated_price(self):
+        with_price = Call.objects.filter(price__isnull=False)
+        without_price = Call.objects.filter(price__isnull=True)
+
+        self.assertEqual(with_price.count(), 1)
+        self.assertEqual(without_price.count(), 2)

@@ -28,3 +28,8 @@ class Call(models.Model):
             secs = int(duration % 3600 % 60)
             return f'{hours:d}h{mins:d}m{secs:d}s'
         return None
+
+    def save(self, *args, **kwargs):
+        if self.started_at and self.finished_at and not self.price:
+            self.price = calculate_price(self.started_at, self.finished_at)
+        super(Call, self).save(*args, **kwargs)
