@@ -1,3 +1,30 @@
 from django.db import models
 
-# Create your models here.
+from workatolist.phonecalls.pricing import calculate_price
+
+
+class Call(models.Model):
+    id = models.IntegerField(primary_key=True)
+    started_at = models.DateTimeField(null=True)
+    finished_at = models.DateTimeField(null=True)
+
+    origin_phone = models.CharField(max_length=11, null=True)
+    destination_phone = models.CharField(max_length=11, null=True)
+
+    price = models.FloatField(null=True, editable=False)
+
+    start_id = models.IntegerField(null=True)
+    end_id = models.IntegerField(null=True)
+
+    class Meta:
+        ordering = ['started_at', ]
+
+    @property
+    def duration(self):
+        if self.started_at and self.finished_at:
+            duration = (self.finished_at - self.started_at).total_seconds()
+            hours = int(duration//3600)
+            mins = int(duration % 3600//60)
+            secs = int(duration % 3600 % 60)
+            return f'{hours:d}h{mins:d}m{secs:d}s'
+        return None
