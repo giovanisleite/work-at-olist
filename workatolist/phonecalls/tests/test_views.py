@@ -21,26 +21,35 @@ class CallViewTest(TestCase):
         mixer.cycle(2).blend(Call, **config)
 
     def test_create_type_start(self):
-        data = {'id': 2, 'type': 'start', 'timestamp': '1516757933', 'call_id':1,
-                'source': '1159886999', 'destination':'11998866991'}
+        data = {'id': 2, 'type': 'start', 'timestamp': '1516757933', 'call_id': 1,
+                'source': '1159886999', 'destination': '11998866991'}
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(Call.objects.filter(id=1).exists())
 
     def test_create_type_end(self):
-        data = {'id': 1, 'type': 'end', 'timestamp': '1516757933', 'call_id':2}
+        data = {'id': 1, 'type': 'end', 'timestamp': '1516757933', 'call_id': 2}
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(Call.objects.filter(id=2).exists())
 
     def test_update_type_start(self):
-        data = {'id': 36, 'type': 'start', 'timestamp': '1516757933', 'call_id':43,
-                'source': '1159886999', 'destination':'11998866991'}
+        data = {'id': 36, 'type': 'start', 'timestamp': '1516757933', 'call_id': 43,
+                'source': '1159886999', 'destination': '11998866991'}
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(Call.objects.get(id=43).price)
 
     def test_update_type_end(self):
-        data = {'id': 25, 'type': 'end', 'timestamp': '1516757933', 'call_id':42}
+        data = {'id': 25, 'type': 'end', 'timestamp': '1516757933', 'call_id': 42}
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_invalid_create_type_start(self):
+        data = {'id': 171, 'price': 20.43}
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.data[0], 'The fields don\'t match with those expected')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_invalid_create_type_end(self):
+        data = {'id': 1, 'type': 'end', 'timestamp': '1516757933', 'call_id': 2, 'price': 20.83}
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.data[0], 'The fields don\'t match with those expected')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
