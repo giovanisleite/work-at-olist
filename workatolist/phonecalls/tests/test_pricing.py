@@ -58,61 +58,40 @@ class CalculatePriceTest(TestCase):
         start = datetime(2018, 1, 10, 21, 57, 13)
         end = datetime(2018, 1, 10, 22, 10, 56)
 
-        self.assertEqual(0.54, pricing.calculate_price(start, end),
-                         'The calculated price is wrong')
+        self.assertEqual(0.54, pricing.calculate_price(start, end))
 
     def test_non_completed_minutes(self):
-        pricing.RULES = [pricing.Rule(start=time(hour=0, minute=0, second=0),
-                                      end=time(hour=12, minute=0, second=0),
-                                      connection_charge=1.00,
-                                      duration_charge=10.0),
-                         pricing.Rule(start=time(hour=12, minute=0, second=0),
-                                      end=time(hour=0, minute=0, second=0),
-                                      connection_charge=1.0,
-                                      duration_charge=5.0)]
+        pricing.RULES = [pricing.Rule(start=time(0, 0, 0), end=time(12, 0, 0),
+                                      connection_charge=1.00,duration_charge=10.0),
+                         pricing.Rule(start=time(12, 0, 0), end=time(0, 0, 0),
+                                      connection_charge=1.0, duration_charge=5.0)]
 
         start = datetime(2018, 1, 10, 11, 59, 1)
         end = datetime(2018, 1, 10, 12, 0, 59)
 
         self.assertEqual(1.0, pricing.calculate_price(start, end),
-                         ('The calculated price should be'
-                          ' just the connection charge'))
+                         'The calculated price should be just the connection charge')
 
     def test_call_pass_through_midnight(self):
-        pricing.RULES = [pricing.Rule(start=time(4, 30, 0),
-                                      end=time(21, 57, 0),
-                                      connection_charge=0.36,
-                                      duration_charge=0.09),
-                         pricing.Rule(start=time(21, 57, 0),
-                                      end=time(4, 30, 0),
-                                      connection_charge=0.36,
-                                      duration_charge=0.01)]
+        pricing.RULES = [pricing.Rule(start=time(4, 30, 0), end=time(21, 57, 0),
+                                      connection_charge=0.36, duration_charge=0.09),
+                         pricing.Rule(start=time(21, 57, 0), end=time(4, 30, 0),
+                                      connection_charge=0.36, duration_charge=0.01)]
 
         start = datetime(2018, 1, 10, 23, 57, 0)
         end = datetime(2018, 1, 11, 0, 1, 0)
 
-        self.assertEqual(0.4, pricing.calculate_price(start, end),
-                         ('The calculated price is wrong when a call'
-                          ' extrapolates the day'))
+        self.assertEqual(0.4, pricing.calculate_price(start, end))
 
     def test_call_pass_through_multiple_rules(self):
-        pricing.RULES = [pricing.Rule(start=time(0, 0, 0),
-                                      end=time(12, 1, 0),
-                                      connection_charge=0.6,
-                                      duration_charge=0.5),
-                         pricing.Rule(start=time(12, 1, 0),
-                                      end=time(12, 2, 0),
-                                      connection_charge=0.01,
-                                      duration_charge=2.2),
-                         pricing.Rule(start=time(12, 2, 0),
-                                      end=time(0, 0, 0),
-                                      connection_charge=0.01,
-                                      duration_charge=3.3)]
+        pricing.RULES = [pricing.Rule(start=time(0, 0, 0), end=time(12, 1, 0),
+                                      connection_charge=0.6, duration_charge=0.5),
+                         pricing.Rule(start=time(12, 1, 0), end=time(12, 2, 0),
+                                      connection_charge=0.01, duration_charge=2.2),
+                         pricing.Rule(start=time(12, 2, 0), end=time(0, 0, 0),
+                                      connection_charge=0.01, duration_charge=3.3)]
 
         start = datetime(2018, 1, 10, 12, 0, 0)
         end = datetime(2018, 1, 10, 12, 3, 22)
 
-        self.assertEqual(6.6, pricing.calculate_price(start, end),
-                         ('The calculated price is wrong when a call'
-                          ' extrapolates the day'))
-
+        self.assertEqual(6.6, pricing.calculate_price(start, end))

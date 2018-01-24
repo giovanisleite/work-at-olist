@@ -3,19 +3,14 @@ from datetime import datetime, time, timedelta
 from operator import attrgetter
 from itertools import cycle
 
-Rule = namedtuple('Rule',
-                  'start end connection_charge duration_charge')
+Rule = namedtuple('Rule', 'start end connection_charge duration_charge')
 
 RULES = sorted(
-    [Rule(start=time(hour=6, minute=0, second=0),
-          end=time(hour=22, minute=0, second=0),
-          connection_charge=0.36,
-          duration_charge=0.09),
+    [Rule(start=time(hour=6, minute=0, second=0), end=time(hour=22, minute=0, second=0),
+          connection_charge=0.36, duration_charge=0.09),
 
-     Rule(start=time(hour=22, minute=0, second=0),
-          end=time(hour=6, minute=0, second=0),
-          connection_charge=0.36,
-          duration_charge=0.00)],
+     Rule(start=time(hour=22, minute=0, second=0), end=time(hour=6, minute=0, second=0),
+          connection_charge=0.36, duration_charge=0.0)],
 
     key=attrgetter('start')
 )
@@ -39,9 +34,7 @@ def calculate_price(call_start, call_end):
     non_calculated_start = call_start
 
     while non_calculated_start < call_end:
-        duration = _duration_over_interval(non_calculated_start,
-                                           call_end,
-                                           rule)
+        duration = _duration_over_interval(non_calculated_start, call_end, rule)
         cost += duration.total_seconds()//60 * rule.duration_charge
         non_calculated_start += duration
         rule = next(rules)
