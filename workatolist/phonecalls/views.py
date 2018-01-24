@@ -13,7 +13,7 @@ class CallView(APIView):
             instance = Call.objects.get(id=request.data['call_id'])
         except ObjectDoesNotExist as e:
             instance = None
-        serializer = CallSerializer(instance=instance, data=request.data)
+        serializer = CallSerializer(instance=instance, data=request.data, transform_data=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
