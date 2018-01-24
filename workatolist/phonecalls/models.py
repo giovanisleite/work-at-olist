@@ -8,8 +8,8 @@ class Call(models.Model):
     started_at = models.DateTimeField(null=True)
     finished_at = models.DateTimeField(null=True)
 
-    origin_phone = models.CharField(max_length=11, null=True)
-    destination_phone = models.CharField(max_length=11, null=True)
+    source = models.CharField(max_length=11, null=True)
+    destination = models.CharField(max_length=11, null=True)
 
     price = models.FloatField(null=True, editable=False)
 
