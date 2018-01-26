@@ -3,6 +3,11 @@ from django.db import models
 from workatolist.phonecalls.pricing import calculate_price
 
 
+class Subscriber(models.Model):
+    phone = models.CharField(max_length=11, primary_key=True)
+    name = models.CharField(max_length=50)
+
+
 class Call(models.Model):
     id = models.IntegerField(primary_key=True)
     started_at = models.DateTimeField(null=True)
