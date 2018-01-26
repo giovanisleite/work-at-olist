@@ -12,8 +12,12 @@ class Call(models.Model):
     id = models.IntegerField(primary_key=True)
     started_at = models.DateTimeField(null=True)
     finished_at = models.DateTimeField(null=True)
-    source = models.CharField(max_length=11, null=True)
-    destination = models.CharField(max_length=11, null=True)
+
+    source = models.ForeignKey(Subscriber, on_delete=models.CASCADE,
+                               related_name='outgoing_calls', null=True)
+
+    destination = models.ForeignKey(Subscriber, on_delete=models.CASCADE,
+                                    related_name='incoming_calls', null=True)
 
     price = models.FloatField(null=True, editable=False)
 
