@@ -40,3 +40,18 @@ class CallSerializer(serializers.ModelSerializer):
 
         if not data.get('type', False) or not data_keys == expected[data['type']]:
             raise ValidationError('The fields don\'t match with those expected')
+
+class CallRecordSerializer(serializers.ModelSerializer):
+    call_start_date = serializers.SerializerMethodField()
+    call_start_time = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Call
+        fields = ['destination', 'call_start_date', 'call_start_time', 'duration', 'price']
+        read_only_fields = fields
+
+    def get_call_start_date(self, obj):
+        return obj.started_at.date()
+
+    def get_call_start_time(self, obj):
+        return obj.started_at.time()
