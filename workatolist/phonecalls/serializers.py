@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from workatolist.phonecalls.models import Call
 
@@ -12,15 +13,12 @@ class CallSerializer(serializers.ModelSerializer):
         exclude = ['price']
 
     def __init__(self, *args, **kwargs):
-        if kwargs.get('transform_data', None):
-            data = kwargs.get('data')
-            kwargs['data'] = self.transform_data(data)
-            del kwargs['transform_data']
+        data = kwargs.get('data')
+        kwargs['data'] = self.to_internal_values(data)
         super(CallSerializer, self).__init__(*args, **kwargs)
 
-    def transform_data(self, data):
-        if not self._validate_input(data):
-            raise serializers.ValidationError(detail='The fields don\'t match with those expected')
+    def to_internal_values(self, data):
+        self.validate_input(data)
         real_data = {'id': data['call_id']}
         if data['type'] == 'start':
             started_at = datetime.fromtimestamp(int(data['timestamp']))
@@ -33,14 +31,12 @@ class CallSerializer(serializers.ModelSerializer):
         return real_data
 
     @staticmethod
-    def _validate_input(data):
-        if not data.get('type', None):
-            return False
-
+    def validate_input(data):
         start_keys = {'id', 'type', 'timestamp', 'source', 'destination', 'call_id'}
         end_keys = {'id', 'type', 'timestamp', 'call_id'}
 
         expected = {'start': start_keys, 'end': end_keys}
         data_keys = set(data.keys())
 
-        return data_keys == expected[data['type']]
+        if not data.get('type', False) or not data_keys == expected[data['type']]:
+            raise ValidationError('The fields don\'t match with those expected')

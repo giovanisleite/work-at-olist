@@ -1,11 +1,12 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.serializers import ValidationError
+from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 
 from workatolist.phonecalls.models import Call
 from workatolist.phonecalls.serializers import CallSerializer
+
 
 class CallView(APIView):
 
@@ -17,7 +18,7 @@ class CallView(APIView):
         except ObjectDoesNotExist as e:
             instance = None
         try:
-            serializer = CallSerializer(instance=instance, data=request.data, transform_data=True)
+            serializer = CallSerializer(instance=instance, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
