@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.test import TestCase
+from django.db.models import Q
 from mixer.backend.django import mixer
 
 from workatolist.phonecalls.models import Call
@@ -14,7 +15,9 @@ class CallModelTest(TestCase):
                        datetime.now() - timedelta(hours=3)]
         ends = [datetime.now()] * 2 + [None]
         mixer.cycle(3).blend(Call, started_at=(start for start in self.starts),
-                             finished_at=(end for end in ends), price=(None for _ in range(3)))
+                             finished_at=(finish for finish in ends))
+        Call.objects.filter(Q(started_at__isnull=True) |
+                            Q(finished_at__isnull=True)).update(price=None)
 
     def test_ordering(self):
         first_call = Call.objects.only('started_at').first()
