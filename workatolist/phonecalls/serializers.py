@@ -41,6 +41,7 @@ class CallSerializer(serializers.ModelSerializer):
         if not data.get('type', False) or not data_keys == expected[data['type']]:
             raise ValidationError('The fields don\'t match with those expected')
 
+
 class CallRecordSerializer(serializers.ModelSerializer):
     call_start_date = serializers.SerializerMethodField()
     call_start_time = serializers.SerializerMethodField()
@@ -58,9 +59,26 @@ class CallRecordSerializer(serializers.ModelSerializer):
 
 
 class BillSerializer(serializers.ModelSerializer):
+    period = serializers.SerializerMethodField()
     calls = CallRecordSerializer(source='outgoing_calls', many=True)
 
     class Meta:
         model = Subscriber
-        fields = ['name', 'calls']
+        fields = ['name', 'period', 'calls']
         read_only_fields = fields
+
+    def get_period(self, obj):
+        period = self.context['request'].query_params.get('period', None)
+        if not period:
+            last_month = datetime.today().replace(day=1) - timedelta(days=1)
+            period = last_month.strftime("%m/%Y")
+        self.validate_period(period)
+        return period
+
+    @staticmethod
+    def validate_period(period):
+        month, year = (int(p) for p in period.split('/'))
+        now = datetime.now()
+        if year > now.year or month >= now.month and year >= now.year:
+            raise ValidationError('It\'s only possible to get a telephone bill after '
+                                  'the reference month has ended')
