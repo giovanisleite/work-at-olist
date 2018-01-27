@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from workatolist.phonecalls.models import Call
+from workatolist.phonecalls.models import Call, Subscriber
 
 
 class CallSerializer(serializers.ModelSerializer):
@@ -55,3 +55,12 @@ class CallRecordSerializer(serializers.ModelSerializer):
 
     def get_call_start_time(self, obj):
         return obj.started_at.time()
+
+
+class BillSerializer(serializers.ModelSerializer):
+    calls = CallRecordSerializer(source='outgoing_calls', many=True)
+
+    class Meta:
+        model = Subscriber
+        fields = ['name', 'calls']
+        read_only_fields = fields
