@@ -4,7 +4,8 @@ from workatolist.phonecalls.pricing import calculate_price
 
 
 class Subscriber(models.Model):
-    phone = models.CharField(max_length=11, primary_key=True)
+    id = models.AutoField(primary_key=True)
+    phone = models.CharField(max_length=11, unique=True)
     name = models.CharField(max_length=50)
 
 
@@ -28,8 +29,8 @@ class Call(models.Model):
     def duration(self):
         if self.started_at and self.finished_at:
             duration = (self.finished_at - self.started_at).total_seconds()
-            hours = int(duration//3600)
-            mins = int(duration % 3600//60)
+            hours = int(duration // 3600)
+            mins = int(duration % 3600 // 60)
             secs = int(duration % 3600 % 60)
             return f'{hours:d}h{mins:d}m{secs:d}s'
         return None
