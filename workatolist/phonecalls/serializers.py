@@ -23,8 +23,8 @@ class CallSerializer(serializers.ModelSerializer):
         if data['type'] == 'start':
             started_at = datetime.fromtimestamp(int(data['timestamp']))
             real_data['started_at'] = started_at.strftime('%Y-%m-%d %H:%M:%S')
-            real_data['source'] = data['source']
-            real_data['destination'] = data['destination']
+            real_data['source'] = Subscriber.objects.get(phone=data['source']).id
+            real_data['destination'] = Subscriber.objects.get(phone=data['destination']).id
         else:
             finished_at = datetime.fromtimestamp(int(data['timestamp']))
             real_data['finished_at'] = finished_at.strftime('%Y-%m-%d %H:%M:%S')
