@@ -35,7 +35,7 @@ def calculate_price(call_start, call_end):
 
     while non_calculated_start < call_end:
         duration = _duration_over_interval(non_calculated_start, call_end, rule)
-        cost += duration.total_seconds()//60 * rule.duration_charge
+        cost += duration.total_seconds() // 60 * rule.duration_charge
         non_calculated_start += duration
         rule = next(rules)
 
