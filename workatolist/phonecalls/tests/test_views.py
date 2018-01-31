@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from django.test import TestCase
 from django.shortcuts import resolve_url
 from rest_framework import status
-from rest_framework.exceptions import ValidationError
 
 from mixer.backend.django import mixer
 from freezegun import freeze_time

@@ -62,7 +62,7 @@ class CalculatePriceTest(TestCase):
 
     def test_non_completed_minutes(self):
         pricing.RULES = [pricing.Rule(start=time(0, 0, 0), end=time(12, 0, 0),
-                                      connection_charge=1.00,duration_charge=10.0),
+                                      connection_charge=1.00, duration_charge=10.0),
                          pricing.Rule(start=time(12, 0, 0), end=time(0, 0, 0),
                                       connection_charge=1.0, duration_charge=5.0)]
 
