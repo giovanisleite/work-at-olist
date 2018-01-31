@@ -24,7 +24,7 @@ class CallView(APIView):
             serializer = CallSerializer(instance=instance, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response('Call details saved successfully', status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except ValidationError as error:
             return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
