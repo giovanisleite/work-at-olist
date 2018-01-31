@@ -45,6 +45,7 @@ class CallSerializer(serializers.ModelSerializer):
 class CallRecordSerializer(serializers.ModelSerializer):
     call_start_date = serializers.SerializerMethodField()
     call_start_time = serializers.SerializerMethodField()
+    destination = serializers.SerializerMethodField()
 
     class Meta:
         model = Call
@@ -56,6 +57,9 @@ class CallRecordSerializer(serializers.ModelSerializer):
 
     def get_call_start_time(self, obj):
         return obj.started_at.time()
+
+    def get_destination(self, obj):
+        return obj.destination.phone
 
 
 class BillSerializer(serializers.ModelSerializer):
