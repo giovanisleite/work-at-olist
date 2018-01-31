@@ -1,0 +1,7 @@
+-r base.txt
+Faker==0.8.8
+freezegun==0.3.9
+mixer==6.0.1
+python-dateutil==2.6.1
+six==1.11.0
+text-unidecode==1.1
