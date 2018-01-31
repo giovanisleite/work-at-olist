@@ -64,7 +64,8 @@ class CallViewTest(TestCase):
 class BillViewTest(TestCase):
 
     def setUp(self):
-        subs = mixer.blend(Subscriber)
+
+        subs = mixer.blend(Subscriber, phone='0042424242')
         self.url = resolve_url('api:bill', phone=subs.phone)
 
         datas = [(2016, 12, 26), (2016, 12, 28), (2016, 11, 1)]

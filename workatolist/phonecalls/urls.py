@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import re_path
 from workatolist.phonecalls.views import CallView, BillView
 
 app_name = 'phonecalls'
 
 urlpatterns = [
-    path('call/', CallView.as_view(), name='call'),
-    path('bill/<str:phone>', BillView.as_view(), name='bill'),
+    re_path(r'^call/?$', CallView.as_view(), name='call'),
+    re_path(r'^bill/(?P<phone>\w{10,11})/?$', BillView.as_view(), name='bill'),
 ]
