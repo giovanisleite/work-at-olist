@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 
 from workatolist.phonecalls.pricing import calculate_price
 
@@ -23,7 +24,7 @@ class Call(models.Model):
     price = models.FloatField(null=True, editable=False)
 
     class Meta:
-        ordering = ['started_at', ]
+        ordering = [F('started_at').asc(nulls_last=True), ]
 
     @property
     def duration(self):
