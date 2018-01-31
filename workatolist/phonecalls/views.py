@@ -40,7 +40,8 @@ class BillView(generics.RetrieveAPIView):
         period = self.request.query_params.get('period', default_period)
         month, year = period.split('/')
 
-        related_queryset = Call.objects.filter(finished_at__month=month,
+        related_queryset = Call.objects.filter(started_at__isnull=False,
+                                               finished_at__month=month,
                                                finished_at__year=year)
 
         queryset = Subscriber.objects.prefetch_related(Prefetch('outgoing_calls',
