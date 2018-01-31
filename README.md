@@ -73,7 +73,7 @@ Fill the example.env file with your settings preferences:
 Be sure that you have python >= 3.5 installed. And follow the instructions bellow:
 
 ```console
-$ git clone link
+$ git clone https://github.com/giovanisleite/work-at-olist
 $ cd work-at-olist
 $ pip install -r requirements-local.txt
 $ python manage.py migrate
@@ -119,7 +119,7 @@ You should see something like the <a href="#call_end_format">call end format</a>
 
 #### Get the bill, for the number 4136363636, for the last month or for a specified period (12/2017, in 2nd request)
 ```console
-$ curl -H "Content-Type: application/json" -X GET http://giovani-work-.com/api/bill/4136363636
+$ curl -H "Content-Type: application/json" -X GET http://giovani-work-at-olist.herokuapp.com/api/bill/4136363636
 
 $ curl -H "Content-Type: application/json" -X GET http://giovani-work-at-olist.herokuapp.com/api/bill/4136363636?period=12/2017
 
