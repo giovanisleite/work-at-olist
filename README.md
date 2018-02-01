@@ -108,7 +108,7 @@ $ python manage.py shell
 $ python manage.py runserver
 ```
 
-(If locally, replace in the url from the examples - http://giovani-work-at-olist.herokuapp.com/ for http://localhost:8000/)
+(If locally, open other terminal tab and replace in the url from the examples http://giovani-work-at-olist.herokuapp.com/ for http://localhost:8000/)
 
 #### Send a call start information
 ```console
