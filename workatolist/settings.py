@@ -18,7 +18,7 @@ from dj_database_url import parse as db_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJ_DIR = os.path.join(BASE_DIR, 'workatolist')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'workatolist.wsgi.application'
 DATABASES = {
     'default': config(
         'DATABASE_URL',
-        default=f'sqlite:///{BASE_DIR}db.sqlite3',
+        default=f'sqlite:///{PROJ_DIR}/db.sqlite3',
         cast=db_url
     )
 }
@@ -126,7 +126,7 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJ_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
