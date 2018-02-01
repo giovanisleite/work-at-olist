@@ -60,14 +60,6 @@ In this endpoint you will get the <span id="bill_format">*bill information*</spa
 
 ## Installing and Testing
 
-### Configure the .env variables
-
-Fill the example.env file with your settings preferences:
-- `SEKRET` (_str_, _required_) [Django's secret key](https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key)
-- `DATABASE_URL` (_string_, _default: db.sqlite3_, _optional_) [Database URL](https://github.com/kennethreitz/dj-database-url#url-schema)
-- `DEBUG` (_bool_, _default: False_, _optional_) enable or disable [Django debug mode](https://docs.djangoproject.com/en/2.0/ref/settings/#debug)
-- `HOSTS` (_str_, _optional_ if DEBUG True) [Django's allowed hosts](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts)
-
 ### Install
 
 Be sure that you have python >= 3.5 installed. And follow the instructions bellow:
@@ -75,9 +67,28 @@ Be sure that you have python >= 3.5 installed. And follow the instructions bello
 ```console
 $ git clone https://github.com/giovanisleite/work-at-olist
 $ cd work-at-olist
+```
+
+### Configure the .env variables (sample.env it is a good start, so you can rename it to .env)
+
+```
+$ mv sample.env .env
+```
+
+And modify the .env file with your settings preferences, if you want to
+
+- `SEKRET` (_str_, _required_) [Django's secret key](https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key)
+- `DATABASE_URL` (_string_, _default: db.sqlite3_, _optional_) [Database URL](https://github.com/kennethreitz/dj-database-url#url-schema)
+- `DEBUG` (_bool_, _default: False_, _optional_) enable or disable [Django debug mode](https://docs.djangoproject.com/en/2.0/ref/settings/#debug)
+- `HOSTS` (_str_, _optional_ if DEBUG True) [Django's allowed hosts](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts)
+
+Install the required libraries and migrate
+
+```console
 $ pip install -r requirements-local.txt
 $ python manage.py migrate
 ```
+
 ### Test
 
 ```console
